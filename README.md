@@ -118,5 +118,3 @@ http {
 ```
 
 If the docker containers are still running, press `Ctrl + C` to stop them. Now lets fire up the docker containers with the updated contents in `docker-compose.yml`. If all has been done correctly, we should have everything ready. Now lets open the browser and enter the url - [`http://my-wordpress-blog.local`](http://my-wordpress-blog.local). This should redirect to [`https://my-wordpress-blog.local`](https://my-wordpress-blog.local). Now if you look at the top left of the browser, the lock icon is green, which means that the browser has accepted our locally generated self signed ssl certificates.
-
-The github repository can be found [here](https://github.com/vishalraj82/https-in-docker)
