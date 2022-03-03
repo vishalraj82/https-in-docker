@@ -107,12 +107,15 @@ http {
     ssl_ciphers HIGH:!aNULL:!MD5;
 
     location / {
+      try_files $uri $uri/ /index.php?$args;
+      index index.php;
+
       proxy_buffering off;
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Forwarded-Host $host;
       proxy_set_header X-Forwarded-Port $server_port;
 
-      proxy_pass http://wordpress;
+      proxy_pass http://wordpress;  
     }
 }
 ```
