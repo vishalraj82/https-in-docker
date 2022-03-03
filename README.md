@@ -16,7 +16,7 @@ version: '3.9'
 
 services:
   wordpress:
-    image: wordpress
+    image: wordpress:latest
     restart: always
     ports:
       - 8080:80
@@ -28,7 +28,7 @@ services:
     volumes:
       - wordpress:/var/www/html
   db:
-    image: mysql:5.7
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: exampledb
@@ -52,7 +52,7 @@ In order to have HTTPS in the local development environment, we will use a utili
 Now lets get back to generating self-signed SSL certificates. Lets move back to our development folder `wordpress-with-https`. Here we will create directory `proxy` and inside it `certs` and `conf`. Lets move inside `proxy/certs` and generate the certificates.
 
 ```
-vishalr@ubuntu ~/wordpress-with-https> mkcert \
+vishalr@ubuntu ~/wordpress-with-https> mkcert 
 >  -cert-file my-wordpress-blog.local.crt \
 >  -key-file my-wordpress-blog.local.key \
 >  my-wordpress-blog.local
@@ -72,7 +72,7 @@ This will generate the SSL key and certificate file which is valid for domain - 
 ```
 services:
   proxy:
-    image: nginx:1.19.10-alpine
+    image: nginx:mainline-alpine
     ports:
       - 80:80
       - 443:443
