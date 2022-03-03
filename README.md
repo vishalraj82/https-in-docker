@@ -52,10 +52,7 @@ In order to have HTTPS in the local development environment, we will use a utili
 Now lets get back to generating self-signed SSL certificates. Lets move back to our development folder `wordpress-with-https`. Here we will create directory `proxy` and inside it `certs` and `conf`. Lets move inside `proxy/certs` and generate the certificates.
 
 ```
-vishalr@ubuntu ~/wordpress-with-https/proxy/certs> mkcert 
->  -cert-file my-wordpress-blog.local.crt \
->  -key-file my-wordpress-blog.local.key \
->  my-wordpress-blog.local
+vishalr@ubuntu ~/wordpress-with-https/proxy/certs> mkcert -cert-file my-wordpress-blog.local.crt -key-file my-wordpress-blog.local.key my-wordpress-blog.local
 
 Created a new certificate valid for the following names
  - "my-wordpress-blog.local"
