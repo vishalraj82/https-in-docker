@@ -16,7 +16,7 @@ version: '3.9'
 
 services:
   wordpress:
-    image: wordpress
+    image: wordpress:latest
     restart: always
     ports:
       - 8080:80
@@ -28,7 +28,7 @@ services:
     volumes:
       - wordpress:/var/www/html
   db:
-    image: mysql:5.7
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: exampledb
@@ -52,10 +52,7 @@ In order to have HTTPS in the local development environment, we will use a utili
 Now lets get back to generating self-signed SSL certificates. Lets move back to our development folder `wordpress-with-https`. Here we will create directory `proxy` and inside it `certs` and `conf`. Lets move inside `proxy/certs` and generate the certificates.
 
 ```
-vishalr@ubuntu ~/wordpress-with-https> mkcert \
->  -cert-file my-wordpress-blog.local.crt \
->  -key-file my-wordpress-blog.local.key \
->  my-wordpress-blog.local
+vishalr@ubuntu ~/wordpress-with-https/proxy/certs> mkcert -cert-file my-wordpress-blog.local.crt -key-file my-wordpress-blog.local.key my-wordpress-blog.local
 
 Created a new certificate valid for the following names
  - "my-wordpress-blog.local"
@@ -64,7 +61,7 @@ The certiciate is at my-wordpress-blog.local.crt and the key at "my-wordpress-bl
 
 It will expire on 14 August 2021
 
-vishalr@ubuntu ~/wordpress-with-https>
+vishalr@ubuntu ~/wordpress-with-https/proxy/certs>
 ```
 
 This will generate the SSL key and certificate file which is valid for domain - [`my-wordpress-blog.local`](http://my-wordpress-blog.local). Now lets modify the contents of file `docker-compose.yml` to use nginx as the proxy. Add the following contents under `services` tag.
@@ -72,7 +69,7 @@ This will generate the SSL key and certificate file which is valid for domain - 
 ```
 services:
   proxy:
-    image: nginx:1.19.10-alpine
+    image: nginx:mainline-alpine
     ports:
       - 80:80
       - 443:443
@@ -107,12 +104,15 @@ http {
     ssl_ciphers HIGH:!aNULL:!MD5;
 
     location / {
+      try_files $uri $uri/ /index.php?$args;
+      index index.php;
+
       proxy_buffering off;
       proxy_set_header X-Forwarded-Proto $scheme;
       proxy_set_header X-Forwarded-Host $host;
       proxy_set_header X-Forwarded-Port $server_port;
 
-      proxy_pass http://wordpress;
+      proxy_pass http://wordpress;  
     }
 }
 ```

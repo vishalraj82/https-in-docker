@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   proxy:
-    image: nginx:1.19.10-alpine
+    image: nginx:mainline-alpine
     ports:
       - 80:80
       - 443:443
@@ -12,7 +12,7 @@ services:
     depends_on:
       - wordpress
   wordpress:
-    image: wordpress:5.7.1-php7.3-apache
+    image: wordpress:latest
     restart: always
     ports:
       - 8080:80
@@ -24,7 +24,7 @@ services:
     volumes:
       - wordpress:/var/www/html
   db:
-    image: mysql:5.7.34
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: exampledb
